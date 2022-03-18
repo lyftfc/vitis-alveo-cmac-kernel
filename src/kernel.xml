@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root versionMajor="1" versionMinor="6">
+  <kernel name="cmac_kernel_TEMPLATE" language="ip" vlnv="nus.edu.sg:RTLKernel:cmac_kernel_TEMPLATE:1.0" attributes="" preferredWorkGroupSizeMultiple="0" workGroupSize="1" interrupt="false" hwControlProtocol="ap_ctrl_none">
+    <ports>
+      <port name="s_axil" mode="slave" range="0x2000" dataWidth="32" portType="addressable" base="0x0"/>
+      <port name="s_axis" mode="write_only" dataWidth="512" portType="stream"/>
+      <port name="m_axis" mode="read_only"  dataWidth="512" portType="stream"/>
+    </ports>
+    <args>
+      <!-- Debug Signals -->
+      <arg name="led_status"                        addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x0080" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <!-- CMAC Register Map-->
+      <arg name="gt_reset_reg"                      addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1000" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="reset_reg"                         addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1004" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="mode"                              addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1008" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="conf_tx"                           addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x100C" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="conf_rx"                           addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1014" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="core_mode"                         addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1020" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="version"                           addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1024" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="gt_loopback"                       addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1090" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_tx_status"                    addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1200" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_rx_status"                    addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1204" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_status"                       addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1208" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_rx_block_lock"                addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x120C" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_rx_lane_sync"                 addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1210" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_rx_lane_sync_err"             addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1214" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_an_link_ctl"                  addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1260" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_lt_status"                    addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x1264" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_pm_tick"                      addressQualifier="0" id="0" port="s_axil" size="0x4" offset="0x12B0" type="uint" hostOffset="0x00" hostSize="0x4"/> 
+      <arg name="stat_cycle_count"                  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x12B8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+        <!-- Tx Stats-->
+      <arg name="stat_tx_total_packets"             addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1500" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_good_packets"        addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1508" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_bytes"               addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1510" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_good_bytes"          addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1518" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_64B"         addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1520" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_65_127B"     addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1528" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_128_255B"    addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1530" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_256_511B"    addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1538" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_512_1023B"   addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1540" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_1024_1518B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1548" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_1519_1522B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1550" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_1523_1548B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1558" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_1549_2047B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1560" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_2048_4095B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1568" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_4096_8191B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1570" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_8192_9215B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1578" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_large"       addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1580" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_packets_small"       addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1588" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_total_bad_fcs"             addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x15B8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_pause"                     addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x15F0" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_tx_user_pause"                addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x15F8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+        <!-- Rx Stats-->
+      <arg name="stat_rx_total_packets"             addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1608" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_good_packets"        addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1610" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_bytes"               addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1618" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_good_bytes"          addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1620" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_64B"         addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1628" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_65_127B"     addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1630" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_128_255B"    addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1638" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_256_511B"    addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1640" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_512_1023B"   addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1648" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_1024_1518B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1650" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_1519_1522B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1658" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_1523_1548B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1660" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_1549_2047B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1668" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_2048_4095B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1670" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_4096_8191B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1678" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_8192_9215B"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1680" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_large"       addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1688" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_small"       addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1690" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_undersize"   addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1698" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_fragmented"  addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16A0" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_oversize"    addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16A8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_toolong"     addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16B0" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_packets_jabber"      addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16B8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_total_bad_fcs"             addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16C0" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_packets_bad_fcs"           addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16C8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_stomped_fcs"               addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16D0" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_pause"                     addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x16F8" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <arg name="stat_rx_user_pause"                addressQualifier="0" id="0" port="s_axil" size="0x8" offset="0x1700" type="uint" hostOffset="0x00" hostSize="0x8"/> 
+      <!-- Stream Interfaces -->
+      <arg name="s_axis" addressQualifier="4" id="0" port="s_axis" size="0x0" offset="0x0" hostOffset="0x0" hostSize="0x0" memSize="0" type="stream&lt;ap_axiu&lt;512,0,0,0>>&amp;" />
+      <arg name="m_axis" addressQualifier="4" id="0" port="m_axis" size="0x0" offset="0x0" hostOffset="0x0" hostSize="0x0" memSize="0" type="stream&lt;ap_axiu&lt;512,0,0,0>>&amp;" />
+    </args>
+  </kernel>
+</root>
