@@ -100,7 +100,7 @@ set_property -dict {
     auto_family_support_level {level_2}
     xpm_libraries {XPM_CDC XPM_MEMORY XPM_FIFO}
 } [ipx::current_core]
-set_property range 8192 [ipx::get_address_blocks reg0 -of_objects [ipx::get_memory_maps s_axil -of_objects [ipx::current_core]]]
+set_property range 4096 [ipx::get_address_blocks reg0 -of_objects [ipx::get_memory_maps s_axil -of_objects [ipx::current_core]]]
 
 set cmac_xci ${ip_build_dir}/cmac_usplus_${qsfp_port}/cmac_usplus_${qsfp_port}.xci
 puts $cmac_xci
