@@ -12,7 +12,7 @@ XO_FILE := $(BUILD_DIR)/cmac_$(BOARD_PORT).xo
 all: $(XO_FILE)
 
 $(XO_FILE): $(BPS_WRAPPER)
-	vivado -mode batch -source scripts/cmac_xopack.tcl -tclargs $(BOARD) $(PORT)
+	vivado -mode batch -notrace -source scripts/cmac_xopack.tcl -tclargs $(BOARD) $(PORT)
 
 $(BPS_WRAPPER):
 	@mkdir -p $(BUILD_DIR)
