@@ -96,12 +96,15 @@ set_property -dict {
     core_revision {1}
     sdx_kernel {true}
     sdx_kernel_type {rtl}
-    vitis_drc {ctrl_protocol ap_ctrl_none}
-    ipi_drc {ignore_freq_hz false}
     supported_families {virtexuplus Production virtexuplusHBM Production}
     auto_family_support_level {level_2}
     xpm_libraries {XPM_CDC XPM_MEMORY XPM_FIFO}
 } [ipx::current_core]
+if {[string first 2021 [version -short] ] != -1} {
+	puts "INFO: Adding IP DRC properties for Vivado 2021.x."
+    set_property vitis_drc {ctrl_protocol ap_ctrl_none} [ipx::current_core]
+    set_property ipi_drc {ignore_freq_hz false} [ipx::current_core]
+}
 set_property range 4096 [ipx::get_address_blocks reg0 -of_objects [ipx::get_memory_maps s_axil -of_objects [ipx::current_core]]]
 
 set cmac_xci ${ip_build_dir}/cmac_usplus_${qsfp_port}/cmac_usplus_${qsfp_port}.xci
