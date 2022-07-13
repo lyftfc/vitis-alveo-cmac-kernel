@@ -100,8 +100,8 @@ set_property -dict {
     auto_family_support_level {level_2}
     xpm_libraries {XPM_CDC XPM_MEMORY XPM_FIFO}
 } [ipx::current_core]
-if {[string first 2021 [version -short] ] != -1} {
-	puts "INFO: Adding IP DRC properties for Vivado 2021.x."
+if {[version -short] >= 2021.1} {
+    puts "INFO: Adding IP DRC properties for Vivado 2021.x or later."
     set_property vitis_drc {ctrl_protocol ap_ctrl_none} [ipx::current_core]
     set_property ipi_drc {ignore_freq_hz false} [ipx::current_core]
 }
