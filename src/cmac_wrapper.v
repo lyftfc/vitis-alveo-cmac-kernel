@@ -43,7 +43,9 @@ module cmac_wrapper_TEMPLATE (
     input    [3:0] gt_rxn,
     output   [3:0] gt_txp,
     output   [3:0] gt_txn,
+    (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock_rtl:1.0 gt_refclk CLK_P" *)
     input          gt_refclk_p,
+    (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock_rtl:1.0 gt_refclk CLK_N" *)
     input          gt_refclk_n
 );
     
