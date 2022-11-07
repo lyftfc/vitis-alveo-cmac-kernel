@@ -2,6 +2,7 @@
 
 set min_pkt_len 64
 set max_pkt_len 1518
+set axi_clk_f   125.00
 set synth_jobs 8
 
 set wrkdir [file normalize .]
@@ -9,9 +10,11 @@ set board_dir ${wrkdir}/boards
 set script_dir ${wrkdir}/scripts
 
 if {$argc < 2} {
-    puts "Usage: vivado -mode batch -source cmac_xopack.tcl -tclargs au[50|250|280] <port_id>"
+    puts "Usage: vivado -mode batch -source cmac_xopack.tcl -tclargs au\[50|250|280\] <port_id> \[axi_freq\] \[board_rev\]"
     exit
 }
+if {$argc >= 3} {set axi_clk_f [lindex $argv 2]}
+if {$argc >= 4} {set board_rev_override [lindex $argv 3]}
 
 set board [lindex $argv 0]
 set qsfp_port [lindex $argv 1]
@@ -46,12 +49,13 @@ create_ip -name cmac_usplus -vendor xilinx.com -library ip -module_name $cmac_us
 cmac_set_property $cmac_usplus $qsfp_port
 set_property CONFIG.RX_MIN_PACKET_LEN $min_pkt_len [get_ips $cmac_usplus]
 set_property CONFIG.RX_MAX_PACKET_LEN $max_pkt_len [get_ips $cmac_usplus]
+set_property CONFIG.GT_DRP_CLK $axi_clk_f [get_ips $cmac_usplus]
 set_property -dict {
     CONFIG.CMAC_CAUI4_MODE {1}
     CONFIG.NUM_LANES {4x25}
     CONFIG.USER_INTERFACE {AXIS}
-    CONFIG.GT_DRP_CLK {125.00}
     CONFIG.ENABLE_AXI_INTERFACE {1}
+    CONFIG.INCLUDE_RS_FEC {1}
     CONFIG.INCLUDE_STATISTICS_COUNTERS {1}
     CONFIG.LANE5_GT_LOC {NA}
     CONFIG.LANE6_GT_LOC {NA}

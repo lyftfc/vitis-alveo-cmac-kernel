@@ -1,6 +1,8 @@
 
 BOARD ?= au50
 PORT ?= 0
+AXI_FREQ ?= 125.00
+BOARD_REV ?=
 
 BOARD_PORT := $(BOARD)_$(PORT)
 BUILD_DIR := build/$(BOARD_PORT)
@@ -12,7 +14,7 @@ XO_FILE := $(BUILD_DIR)/cmac_$(BOARD_PORT).xo
 all: $(XO_FILE)
 
 $(XO_FILE): $(BPS_WRAPPER)
-	vivado -mode batch -notrace -source scripts/cmac_xopack.tcl -tclargs $(BOARD) $(PORT)
+	vivado -mode batch -notrace -source scripts/cmac_xopack.tcl -tclargs $(BOARD) $(PORT) $(AXI_FREQ) $(BOARD_REV)
 
 $(BPS_WRAPPER):
 	@mkdir -p $(BUILD_DIR)

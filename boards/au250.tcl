@@ -1,7 +1,11 @@
 # Board specific parameters for Alveo U250
 
 set part xcu250-figd2104-2l-e
-set board_part xilinx.com:au250:part0:1.3
+set board_rev 1.3
+if {[info exists board_rev_override]} {
+    set board_rev $board_rev_override
+}
+set board_part xilinx.com:au250:part0:$board_rev
 
 proc cmac_set_property {cmac_ip port_id} {
     if {$port_id == 0} {
