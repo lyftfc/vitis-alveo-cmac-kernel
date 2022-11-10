@@ -65,8 +65,11 @@ module cmac_wrapper_TEMPLATE (
 //    wire  [8:0] ctl_tx_pause_req;
 //    wire        ctl_tx_resend_pause;
 
-    wire        cmac_clk;
+    wire        cmac_clk_rx;
+    wire        cmac_clk_tx;
     wire        cmac_sys_reset;
+    wire        cmac_usrrst_rx;
+    wire        cmac_usrrst_tx;
 
     wire [55:0] rx_preambleout;
     wire        tx_ovfout;
@@ -329,17 +332,17 @@ cmac_usplus_ID cmac_inst (
     .gt_ref_clk_n                        (gt_refclk_n),
     .gt_ref_clk_out                      (),
     .gt_rxrecclkout                      (),
-    .gt_rxusrclk2                        (),
-    .rx_clk                              (cmac_clk),
-    .gt_txusrclk2                        (cmac_clk),
+    .gt_rxusrclk2                        (cmac_clk_rx),
+    .rx_clk                              (cmac_clk_rx),
+    .gt_txusrclk2                        (cmac_clk_tx),
 
     .sys_reset                           (cmac_sys_reset),
     .core_rx_reset                       (core_rx_reset),
     .core_tx_reset                       (core_tx_reset),
     .gtwiz_reset_tx_datapath             (gtwiz_reset_tx_datapath),
     .gtwiz_reset_rx_datapath             (gtwiz_reset_rx_datapath),
-    .usr_rx_reset                        (),
-    .usr_tx_reset                        (),
+    .usr_rx_reset                        (cmac_usrrst_rx),
+    .usr_tx_reset                        (cmac_usrrst_tx),
     .gt_powergoodout                     (gt_powergoodout),
     .gt_loopback_in                      (gt_loopback_in),
 
@@ -619,8 +622,8 @@ axis_cmac_cdc cmac_tx_cdc_inst (
     .s_axis_tdata   (s_axis_tdata),
     .s_axis_tkeep   (s_axis_tkeep),
     .s_axis_tlast   (s_axis_tlast),
-    .m_axis_aclk    (cmac_clk),
-    .m_axis_aresetn (ap_rst_n),
+    .m_axis_aclk    (cmac_clk_tx),
+    .m_axis_aresetn (~cmac_usrrst_tx),
     .m_axis_tvalid  (s_axis_tx_tvalid),
     .m_axis_tready  (s_axis_tx_tready),
     .m_axis_tdata   (s_axis_tx_tdata),
@@ -630,8 +633,8 @@ axis_cmac_cdc cmac_tx_cdc_inst (
 
 // Rx stream: GT -> CMAC -> CDC -> App
 axis_cmac_cdc cmac_rx_cdc_inst (
-    .s_axis_aclk    (cmac_clk),
-    .s_axis_aresetn (ap_rst_n),
+    .s_axis_aclk    (cmac_clk_rx),
+    .s_axis_aresetn (~cmac_usrrst_rx),
     .s_axis_tvalid  (m_axis_rx_tvalid),
     .s_axis_tready  (m_axis_rx_tready),
     .s_axis_tdata   (m_axis_rx_tdata),

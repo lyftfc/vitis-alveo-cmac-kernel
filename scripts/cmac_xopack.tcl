@@ -8,6 +8,7 @@ set synth_jobs 8
 set wrkdir [file normalize .]
 set board_dir ${wrkdir}/boards
 set script_dir ${wrkdir}/scripts
+set src_dir ${wrkdir}/src
 
 if {$argc < 2} {
     puts "Usage: vivado -mode batch -source cmac_xopack.tcl -tclargs au\[50|250|280\] <port_id> \[axi_freq\] \[board_rev\]"
@@ -87,6 +88,7 @@ add_files [glob ${build_dir}/${krnl_name}.v]
 update_compile_order -fileset sources_1
 # get_property top [current_fileset] # should be $krnl_name
 add_files -fileset constrs_1 [glob ${board_dir}/qsfp_refclk_${board_port}.xdc]
+add_files -fileset constrs_1 ${src_dir}/cmac_timing.xdc
 
 # Pack project into IP
 set ippack_dir ${build_dir}/${krnl_name}_ippack
