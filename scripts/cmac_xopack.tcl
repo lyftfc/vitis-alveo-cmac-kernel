@@ -67,16 +67,21 @@ set_property -dict {
     CONFIG.INS_LOSS_NYQ {20}
     CONFIG.INCLUDE_RS_FEC {1}
     CONFIG.ENABLE_PIPELINE_REG {1}
-    CONFIG.TX_FLOW_CONTROL {0}
-    CONFIG.RX_FLOW_CONTROL {0}
+    CONFIG.TX_FLOW_CONTROL {1}
+    CONFIG.RX_FLOW_CONTROL {1}
+    CONFIG.RX_CHECK_ACK {1}
 } [get_ips $cmac_usplus]
 synth_ip $cmac_usplus $synth_jobs $ip_build_dir
 
-# Instantiate AXIS_Clock_Converter IP
+# Instantiate AXIS_Data_FIFO IP for clock domain crossing
 set cmac_ethcdc axis_cmac_cdc
-create_ip -name axis_clock_converter -vendor xilinx.com -library ip -module_name $cmac_ethcdc -dir $ip_build_dir
+create_ip -name axis_data_fifo -vendor xilinx.com -library ip -module_name $cmac_ethcdc -dir $ip_build_dir
 set_property -dict {
     CONFIG.TDATA_NUM_BYTES {64}
+    CONFIG.FIFO_DEPTH {32}
+    CONFIG.FIFO_MODE {2}
+    CONFIG.FIFO_MEMORY_TYPE {block}
+    CONFIG.IS_ACLK_ASYNC {1}
     CONFIG.TUSER_WIDTH {0}
     CONFIG.HAS_TKEEP {1}
     CONFIG.HAS_TLAST {1}

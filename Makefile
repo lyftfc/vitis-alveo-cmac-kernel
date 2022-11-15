@@ -10,11 +10,15 @@ IP_DIR := $(BUILD_DIR)/vivado_ip
 BPS_WRAPPER := $(BUILD_DIR)/cmac_$(BOARD_PORT).v
 KRNL_XML := $(BUILD_DIR)/kernel_$(BOARD_PORT).xml
 XO_FILE := $(BUILD_DIR)/cmac_$(BOARD_PORT).xo
+MK_PARAM_REC := $(BUILD_DIR)/build_params
 
 all: $(XO_FILE)
 
-$(XO_FILE): $(BPS_WRAPPER)
+$(XO_FILE): $(BPS_WRAPPER) $(MK_PARAM_REC)
 	vivado -mode batch -notrace -source scripts/cmac_xopack.tcl -tclargs $(BOARD) $(PORT) $(AXI_FREQ) $(BOARD_REV)
+
+$(MK_PARAM_REC):
+	@echo "Board: $(BOARD):$(BOARD_REV)\nPort: $(PORT)\nAXI Freq: $(AXI_FREQ)" > $@
 
 $(BPS_WRAPPER):
 	@mkdir -p $(BUILD_DIR)

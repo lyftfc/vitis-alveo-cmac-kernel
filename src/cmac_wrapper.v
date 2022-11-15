@@ -595,8 +595,8 @@ cmac_usplus_ID cmac_inst (
 //    .stat_tx_pause                       (stat_tx_pause),
 //    .stat_tx_user_pause                  (stat_tx_user_pause),
 
-//    .ctl_tx_pause_req                    (ctl_tx_pause_req),
-//    .ctl_tx_resend_pause                 (ctl_tx_resend_pause),
+    .ctl_tx_pause_req                    (9'b0),
+    .ctl_tx_resend_pause                 (1'b0),
     .ctl_tx_send_idle                    (ctl_tx_send_idle),
     .ctl_tx_send_rfi                     (ctl_tx_send_rfi),
     .ctl_tx_send_lfi                     (ctl_tx_send_lfi),
@@ -614,16 +614,17 @@ cmac_usplus_ID cmac_inst (
 // Clock domain crossing for Ethernet Tx/Rx AXI-Streams
 
 // Tx stream: App -> CDC -> CMAC -> GT
+wire txcdc_comb_rstn;
+assign txcdc_comb_rstn = ap_rst_n && ~cmac_usrrst_tx;
 axis_cmac_cdc cmac_tx_cdc_inst (
     .s_axis_aclk    (ap_clk),
-    .s_axis_aresetn (ap_rst_n),
+    .s_axis_aresetn (txcdc_comb_rstn),
     .s_axis_tvalid  (s_axis_tvalid),
     .s_axis_tready  (s_axis_tready),
     .s_axis_tdata   (s_axis_tdata),
     .s_axis_tkeep   (s_axis_tkeep),
     .s_axis_tlast   (s_axis_tlast),
     .m_axis_aclk    (cmac_clk_tx),
-    .m_axis_aresetn (~cmac_usrrst_tx),
     .m_axis_tvalid  (s_axis_tx_tvalid),
     .m_axis_tready  (s_axis_tx_tready),
     .m_axis_tdata   (s_axis_tx_tdata),
@@ -632,16 +633,17 @@ axis_cmac_cdc cmac_tx_cdc_inst (
 );
 
 // Rx stream: GT -> CMAC -> CDC -> App
+wire rxcdc_comb_rstn;
+assign rxcdc_comb_rstn = ap_rst_n && ~cmac_usrrst_rx;
 axis_cmac_cdc cmac_rx_cdc_inst (
     .s_axis_aclk    (cmac_clk_rx),
-    .s_axis_aresetn (~cmac_usrrst_rx),
+    .s_axis_aresetn (rxcdc_comb_rstn),
     .s_axis_tvalid  (m_axis_rx_tvalid),
     .s_axis_tready  (m_axis_rx_tready),
     .s_axis_tdata   (m_axis_rx_tdata),
     .s_axis_tkeep   (m_axis_rx_tkeep),
     .s_axis_tlast   (m_axis_rx_tlast),
     .m_axis_aclk    (ap_clk),
-    .m_axis_aresetn (ap_rst_n),
     .m_axis_tvalid  (m_axis_tvalid),
     .m_axis_tready  (m_axis_tready),
     .m_axis_tdata   (m_axis_tdata),
