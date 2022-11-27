@@ -46,7 +46,9 @@ module cmac_wrapper_TEMPLATE (
     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock_rtl:1.0 gt_refclk CLK_P" *)
     input          gt_refclk_p,
     (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock_rtl:1.0 gt_refclk CLK_N" *)
-    input          gt_refclk_n
+    input          gt_refclk_n,
+
+    output  [31:0] tx_pkt_cnt
 );
     
 //    output         cmac_clk,
@@ -630,6 +632,16 @@ axis_cmac_cdc cmac_tx_cdc_inst (
     .m_axis_tdata   (s_axis_tx_tdata),
     .m_axis_tkeep   (s_axis_tx_tkeep),
     .m_axis_tlast   (s_axis_tx_tlast)
+);
+
+axis_packet_counter tx_pkt_counter (
+    .aclk           (cmac_clk_tx),
+    .aresetn        (aresetn),
+    .prb_axis_tready(s_axis_tx_tready),
+    .prb_axis_tvalid(s_axis_tx_tvalid),
+    .prb_axis_tdata (s_axis_tx_tdata),
+    .prb_axis_tlast (s_axis_tx_tlast),
+    .packet_count   (tx_pkt_cnt)
 );
 
 // Rx stream: GT -> CMAC -> CDC -> App

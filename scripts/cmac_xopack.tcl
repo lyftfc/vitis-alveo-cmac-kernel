@@ -3,7 +3,7 @@
 set min_pkt_len 64
 set max_pkt_len 1518
 set axi_clk_f   125.00
-set synth_jobs 8
+set synth_jobs  8
 
 set wrkdir [file normalize .]
 set board_dir ${wrkdir}/boards
@@ -78,18 +78,24 @@ set cmac_ethcdc axis_cmac_cdc
 create_ip -name axis_data_fifo -vendor xilinx.com -library ip -module_name $cmac_ethcdc -dir $ip_build_dir
 set_property -dict {
     CONFIG.TDATA_NUM_BYTES {64}
-    CONFIG.FIFO_DEPTH {32}
+    CONFIG.FIFO_DEPTH {128}
     CONFIG.FIFO_MODE {2}
-    CONFIG.FIFO_MEMORY_TYPE {block}
+    CONFIG.FIFO_MEMORY_TYPE {auto}
     CONFIG.IS_ACLK_ASYNC {1}
     CONFIG.TUSER_WIDTH {0}
     CONFIG.HAS_TKEEP {1}
     CONFIG.HAS_TLAST {1}
+    CONFIG.SYNCHRONIZATION_STAGES {6}
 } [get_ips $cmac_ethcdc]
 synth_ip $cmac_ethcdc $synth_jobs $ip_build_dir
 
 # Add IP top-level wrapper and constraints
 add_files [glob ${build_dir}/${krnl_name}.v]
+add_files [list \
+    ${src_dir}/axi_stream_packet_fifo.sv \
+    ${src_dir}/axis_cdc_fifo_xpm.v \
+    ${src_dir}/axis_packet_counter.v
+]
 update_compile_order -fileset sources_1
 # get_property top [current_fileset] # should be $krnl_name
 add_files -fileset constrs_1 [glob ${board_dir}/qsfp_refclk_${board_port}.xdc]
