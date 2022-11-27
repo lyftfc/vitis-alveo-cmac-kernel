@@ -1,7 +1,7 @@
 # Generate CMAC and its wrapper, and pack them as a IP in XO format
 
 set min_pkt_len 64
-set max_pkt_len 1518
+set max_pkt_len 8200
 set axi_clk_f   125.00
 set synth_jobs  8
 
